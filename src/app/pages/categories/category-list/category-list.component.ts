@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CategoryListComponent implements OnInit {
 
+  public resultado: number;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -14,5 +16,16 @@ export class CategoryListComponent implements OnInit {
 
   alert(value) {
     alert(value);
+  }
+
+  soma1() {
+    var n1:number;
+    var n2: number;
+
+    n1 = 5;
+    n2 = 15;
+
+    this.resultado = n1 + n2;
+    alert(this.resultado)
   }
 }
