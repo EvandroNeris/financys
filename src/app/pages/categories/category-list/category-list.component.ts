@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { element } from 'protractor';
+
+import { Category } from '../shared/category.model';
+import { CategoryService } from '../shared/category.service';
 
 @Component({
   selector: 'app-category-list',
@@ -7,25 +11,32 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CategoryListComponent implements OnInit {
 
-  public resultado: number;
+  public categories: Category[] = [];
 
-  constructor() { }
+  constructor(
+    private categoryServices: CategoryService
+  ) { }
 
   ngOnInit(): void {
+    this.categoryServices.getAll().subscribe(categories => {
+      this.categories = categories;
+    }, error => {
+      console.error(error);
+      alert('Erro ao carregar a lista');
+    });
   }
 
-  alert(value) {
-    alert(value);
+  deleteCategory(category: Category): void {
+    const mustDelete = confirm('Deseja realmente excluir este item?');
+
+    if (mustDelete) {
+      this.categoryServices.delete(category.id).subscribe(() => {
+        this.categories = this.categories.filter(element => element != category);
+      }, error => {
+        console.error(error);
+        alert('Erro ao tentar excluir');
+      });
+    }
   }
 
-  soma1() {
-    var n1:number;
-    var n2: number;
-
-    n1 = 5;
-    n2 = 15;
-
-    this.resultado = n1 + n2;
-    alert(this.resultado)
-  }
 }
