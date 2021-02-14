@@ -5,9 +5,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Entry } from '../shared/entry.model';
 import { EntryService } from '../shared/entry.service';
 
+import { Category } from '../../categories/shared/category.model';
+import { CategoryService } from '../../categories/shared/category.service';
+
 import { switchMap } from 'rxjs/operators';
 
 import toastr from 'toastr';
+
 
 @Component({
   selector: 'app-entry-form',
@@ -22,18 +26,42 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
   public serverErrorMessages: string[] = null;
   public submittingForm: boolean = false;
   public entry: Entry = new Entry();
+  public categories: Array<Category>;
+  public imaskConfig = {
+    mask: Number,
+    scale: 2,
+    thousandsSeparator: '',
+    padFractionalZeros: true,
+    normalizeZeros: true,
+    radix: ','
+  }
+  public ptBR = {
+    firstDayOfWeek: 0,
+    dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+    dayNameShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+    dayNameMin: ['Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sa'],
+    monthNames: [
+      'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
+      'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+    ],
+    monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+    today: 'Hoje',
+    clear: 'Limpar'
+  }
 
   constructor(
     private entryServices: EntryService,
     private route: ActivatedRoute,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private categoryServices: CategoryService
   ) { }
 
   ngOnInit(): void {
     this.setCurrentAction();
     this.buildEntryForm();
     this.loadEntry();
+    this.loadCategories();
   }
 
   ngAfterContentChecked(): void {
@@ -51,6 +79,15 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
     this.updateEntry();
   }
 
+  get typeOptions(): Array<any> {
+    return Object.entries(Entry.types).map(([value, text]) => {
+      return {
+        text,
+        value
+      }
+    });
+  }
+
   private setCurrentAction(): void {
     if (this.route.snapshot.url[0].path === 'new') {
       this.currentAction = 'new';
@@ -65,10 +102,10 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
       id: [null],
       name: [null, [Validators.required, Validators.minLength(2)]],
       description: [null],
-      type: [null, [Validators.required]],
+      type: ['exprense', [Validators.required]],
       amount: [null, [Validators.required]],
       date: [null, [Validators.required]],
-      paid: [null, [Validators.required]],
+      paid: [true, [Validators.required]],
       categoryId: [null, [Validators.required]]
     });
   }
@@ -85,6 +122,12 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
         alert('Ocorreu um erro no servidor, tente novamente');
       })
     }
+  }
+
+  private loadCategories(): void {
+    this.categoryServices.getAll().subscribe(categories => {
+      this.categories = categories;
+    })
   }
 
   private setPageTitle(): void {
