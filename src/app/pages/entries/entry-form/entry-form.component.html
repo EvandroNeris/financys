@@ -4,7 +4,7 @@
       <a routerLink="/">Home</a>
     </li>
     <li class="breadcrumb-item">
-      <a routerLink="/categories">Categorias</a>
+      <a routerLink="/entries">Lançamentos</a>
     </li>
     <li class="breadcrumb-item active">
       {{ pageTitle }}
@@ -19,17 +19,17 @@
     </h1>
   </div>
   <div class="col-md-3">
-    <a routerLink="/categories" class="btn btn-light float-right">
+    <a routerLink="/entries" class="btn btn-light float-right">
       Voltar
     </a>
   </div>
 </div>
 
-<form [formGroup]="categoryForm" (submit)="submitForm()">
+<form [formGroup]="entryForm" (submit)="submitForm()">
 
   <div class="card">
     <div class="card-header">
-      Informações sobre a categoria
+      Informações sobre o lançamento
     </div>
 
     <div class="card-body">
@@ -38,9 +38,9 @@
           <label for="name">Name</label>
           <input type="text" class="form-control" id="name" formControlName="name" />
 
-          <div class="text-danger" *ngIf="categoryForm.get('name') && categoryForm.get('name').touched">
-            <div *ngIf="categoryForm.get('name').errors.required">Dado obrigatório</div>
-            <div *ngIf="categoryForm.get('name').errors.minlength">Deve ter no mínimo 2 caracteres</div>
+          <div class="text-danger" *ngIf="entryForm.get('name') && entryForm.get('name').touched">
+            <div *ngIf="entryForm.get('name').errors.required">Dado obrigatório</div>
+            <div *ngIf="entryForm.get('name').errors.minlength">Deve ter no mínimo 2 caracteres</div>
           </div>
         </div>
 
@@ -59,7 +59,7 @@
     </ul>
   </div>
 
-  <button [disabled]="submittingForm || categoryForm.invalid" type="submit" class="btn btn-primary btn-lg float-right mt-3">
+  <button [disabled]="submittingForm || entryForm.invalid" type="submit" class="btn btn-primary btn-lg float-right mt-3">
     Salvar
   </button>
 
