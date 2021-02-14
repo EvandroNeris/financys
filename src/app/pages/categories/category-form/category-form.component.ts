@@ -131,6 +131,6 @@ export class CategoryFormComponent implements OnInit, AfterContentChecked {
       return;
     }
 
-    this.serverErrorMessages = ['Falha na comunicação com o servidor. Por favor, teste mais tarde.'];
+    this.serverErrorMessages = ['Falha na comunicação com o servidor. Por favor, tente mais tarde.'];
   }
 }
