@@ -35,6 +35,7 @@
     <tr *ngFor="let entry of entries">
       <td>
         <strong>{{ entry.name }}</strong>
+        <br/>
         <small class="text-success">{{ entry.date }}</small>
         <br/>
         <small *ngIf="entry.description">{{ entry.description }}</small>

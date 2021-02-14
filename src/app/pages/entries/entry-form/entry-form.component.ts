@@ -104,7 +104,7 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
       description: [null],
       type: ['exprense', [Validators.required]],
       amount: [null, [Validators.required]],
-      date: [null, [Validators.required]],
+      date: [null],
       paid: [true, [Validators.required]],
       categoryId: [null, [Validators.required]]
     });

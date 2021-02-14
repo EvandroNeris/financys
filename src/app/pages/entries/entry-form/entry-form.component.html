@@ -80,10 +80,6 @@
             dateFormat="dd/mm/yy"
             [locale]="ptBR"
             [showButtonBar]="true"></p-calendar>
-
-          <div class="text-danger" *ngIf="entryForm.get('date') && entryForm.get('date').touched">
-            <div *ngIf="entryForm.get('date').errors.required">Dado obrigatório</div>
-          </div>
         </div>
       </div>
 
